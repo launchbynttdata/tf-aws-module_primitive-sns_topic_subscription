@@ -1,0 +1,1 @@
+# tf-aws-module_primitive-sns_topic_subscription
