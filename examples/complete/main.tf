@@ -14,13 +14,6 @@ data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {}
 
-# Alias ARN is derivable at plan time (data sources only) so tf-plan scanners (e.g. FG_R00070) see a
-# concrete kms_master_key_id; the key ARN is unknown until apply.
-locals {
-  sqs_cmk_alias_name = "alias/sns-topic-subscription-example-${data.aws_caller_identity.current.account_id}"
-  sqs_cmk_alias_arn  = "arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${local.sqs_cmk_alias_name}"
-}
-
 module "resource_names" {
   source  = "terraform.registry.launch.nttdata.com/module_library/resource_name/launch"
   version = "~> 2.0"
@@ -36,6 +29,16 @@ module "resource_names" {
   maximum_length          = each.value.max_length
 
   region = join("", split("-", data.aws_region.current.name))
+}
+
+# Alias ARN must be known at plan time (data sources + variable-derived names only) so tf-plan
+# scanners (FG_R00070) see a concrete kms_master_key_id on aws_sqs_queue. The suffix comes from the
+# same resource_name output as the queue so the alias stays unique per naming inputs without random_id
+# (which would be unknown at plan time and would break that check).
+locals {
+  sqs_cmk_alias_slug = var.endpoint == null ? replace(replace(module.resource_names["sqs_queue"].standard, "/", "-"), ".", "-") : null
+  sqs_cmk_alias_name = var.endpoint == null ? "alias/sns-topic-subscription-example-${data.aws_caller_identity.current.account_id}-${local.sqs_cmk_alias_slug}" : null
+  sqs_cmk_alias_arn  = var.endpoint == null ? "arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${local.sqs_cmk_alias_name}" : null
 }
 
 resource "aws_sns_topic" "this" {
