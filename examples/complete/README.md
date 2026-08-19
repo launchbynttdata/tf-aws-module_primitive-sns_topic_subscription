@@ -172,12 +172,6 @@ module "sns_topic_subscription" {
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.9 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.100 |
 
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.100.0 |
-
 ## Modules
 
 | Name | Source | Version |
@@ -203,40 +197,40 @@ module "sns_topic_subscription" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_logical_product_family"></a> [logical\_product\_family](#input\_logical\_product\_family) | Logical product family for resource naming. | `string` | n/a | yes |
-| <a name="input_logical_product_service"></a> [logical\_product\_service](#input\_logical\_product\_service) | Logical product service for resource naming. | `string` | n/a | yes |
 | <a name="input_class_env"></a> [class\_env](#input\_class\_env) | Environment class for resource naming. | `string` | n/a | yes |
-| <a name="input_instance_env"></a> [instance\_env](#input\_instance\_env) | Instance environment number for resource naming (0-999). | `number` | n/a | yes |
-| <a name="input_instance_resource"></a> [instance\_resource](#input\_instance\_resource) | Instance resource number for resource naming (0-100). | `number` | n/a | yes |
-| <a name="input_resource_names_map"></a> [resource\_names\_map](#input\_resource\_names\_map) | Map of resource name keys used by the resource\_name module (must include sns\_topic and sqs\_queue when this example creates those resources). | <pre>map(object({<br/>    name       = string<br/>    max_length = number<br/>  }))</pre> | n/a | yes |
-| <a name="input_topic_arn"></a> [topic\_arn](#input\_topic\_arn) | When null, this example creates an SNS topic. When set, that topic ARN is used. | `string` | `null` | no |
-| <a name="input_endpoint"></a> [endpoint](#input\_endpoint) | When null, this example creates an encrypted SQS queue. When set, that subscription endpoint is used. | `string` | `null` | no |
-| <a name="input_protocol"></a> [protocol](#input\_protocol) | Protocol to use for the subscription. | `string` | n/a | yes |
 | <a name="input_confirmation_timeout_in_minutes"></a> [confirmation\_timeout\_in\_minutes](#input\_confirmation\_timeout\_in\_minutes) | Integer indicating the wait time for confirmation of an HTTP or HTTPS subscription. Only applicable when protocol is http or https. | `number` | `null` | no |
 | <a name="input_delivery_policy"></a> [delivery\_policy](#input\_delivery\_policy) | JSON string for the subscription delivery policy (HTTP/S, SQS, etc.). | `string` | `null` | no |
+| <a name="input_endpoint"></a> [endpoint](#input\_endpoint) | When null, this example creates an encrypted SQS queue. When set, that subscription endpoint is used. | `string` | `null` | no |
 | <a name="input_endpoint_auto_confirms"></a> [endpoint\_auto\_confirms](#input\_endpoint\_auto\_confirms) | Whether the endpoint is capable of auto-confirming the subscription (e.g., some HTTPS endpoints). | `bool` | `null` | no |
 | <a name="input_filter_policy"></a> [filter\_policy](#input\_filter\_policy) | JSON string for the subscription filter policy. | `string` | `null` | no |
 | <a name="input_filter_policy_scope"></a> [filter\_policy\_scope](#input\_filter\_policy\_scope) | Whether filter\_policy applies to MessageAttributes or MessageBody. | `string` | `null` | no |
+| <a name="input_instance_env"></a> [instance\_env](#input\_instance\_env) | Instance environment number for resource naming (0-999). | `number` | n/a | yes |
+| <a name="input_instance_resource"></a> [instance\_resource](#input\_instance\_resource) | Instance resource number for resource naming (0-100). | `number` | n/a | yes |
+| <a name="input_logical_product_family"></a> [logical\_product\_family](#input\_logical\_product\_family) | Logical product family for resource naming. | `string` | n/a | yes |
+| <a name="input_logical_product_service"></a> [logical\_product\_service](#input\_logical\_product\_service) | Logical product service for resource naming. | `string` | n/a | yes |
+| <a name="input_protocol"></a> [protocol](#input\_protocol) | Protocol to use for the subscription. | `string` | n/a | yes |
 | <a name="input_raw_message_delivery"></a> [raw\_message\_delivery](#input\_raw\_message\_delivery) | Whether to enable raw message delivery (supported for SQS, HTTP/S, and Firehose subscriptions). | `bool` | `null` | no |
 | <a name="input_redrive_policy"></a> [redrive\_policy](#input\_redrive\_policy) | JSON string for the dead-letter queue redrive policy (SQS subscriptions). | `string` | `null` | no |
 | <a name="input_replay_policy"></a> [replay\_policy](#input\_replay\_policy) | JSON string for FIFO topic message replay policy. | `string` | `null` | no |
+| <a name="input_resource_names_map"></a> [resource\_names\_map](#input\_resource\_names\_map) | Map of resource name keys used by the resource\_name module (must include sns\_topic and sqs\_queue when this example creates those resources). | <pre>map(object({<br/>    name       = string<br/>    max_length = number<br/>  }))</pre> | n/a | yes |
 | <a name="input_subscription_role_arn"></a> [subscription\_role\_arn](#input\_subscription\_role\_arn) | IAM role ARN for Kinesis Firehose delivery to a subscription. | `string` | `null` | no |
+| <a name="input_topic_arn"></a> [topic\_arn](#input\_topic\_arn) | When null, this example creates an SNS topic. When set, that topic ARN is used. | `string` | `null` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_aws_region"></a> [aws\_region](#output\_aws\_region) | AWS region where this example applied resources (matches the Terraform AWS provider region). |
-| <a name="output_topic_arn"></a> [topic\_arn](#output\_topic\_arn) | ARN of the SNS topic used by the subscription. |
+| <a name="output_kms_key_id"></a> [kms\_key\_id](#output\_kms\_key\_id) | ID of the KMS key used for SQS encryption when this example creates the queue. |
+| <a name="output_protocol"></a> [protocol](#output\_protocol) | Subscription protocol. |
 | <a name="output_queue_arn"></a> [queue\_arn](#output\_queue\_arn) | ARN of the SQS queue when this example creates the queue. |
 | <a name="output_queue_url"></a> [queue\_url](#output\_queue\_url) | URL of the SQS queue when this example creates the queue. |
-| <a name="output_kms_key_id"></a> [kms\_key\_id](#output\_kms\_key\_id) | ID of the KMS key used for SQS encryption when this example creates the queue. |
+| <a name="output_raw_message_delivery"></a> [raw\_message\_delivery](#output\_raw\_message\_delivery) | Raw message delivery setting passed to the module. |
 | <a name="output_subscription_arn"></a> [subscription\_arn](#output\_subscription\_arn) | ARN of the SNS topic subscription. |
+| <a name="output_subscription_confirmation_was_authenticated"></a> [subscription\_confirmation\_was\_authenticated](#output\_subscription\_confirmation\_was\_authenticated) | Whether the subscription confirmation was authenticated. |
+| <a name="output_subscription_endpoint"></a> [subscription\_endpoint](#output\_subscription\_endpoint) | Subscription endpoint. |
 | <a name="output_subscription_id"></a> [subscription\_id](#output\_subscription\_id) | ID of the SNS topic subscription. |
 | <a name="output_subscription_owner_id"></a> [subscription\_owner\_id](#output\_subscription\_owner\_id) | AWS account ID of the subscription owner. |
 | <a name="output_subscription_pending_confirmation"></a> [subscription\_pending\_confirmation](#output\_subscription\_pending\_confirmation) | Whether the subscription is pending confirmation. |
-| <a name="output_subscription_endpoint"></a> [subscription\_endpoint](#output\_subscription\_endpoint) | Subscription endpoint. |
-| <a name="output_subscription_confirmation_was_authenticated"></a> [subscription\_confirmation\_was\_authenticated](#output\_subscription\_confirmation\_was\_authenticated) | Whether the subscription confirmation was authenticated. |
-| <a name="output_protocol"></a> [protocol](#output\_protocol) | Subscription protocol. |
-| <a name="output_raw_message_delivery"></a> [raw\_message\_delivery](#output\_raw\_message\_delivery) | Raw message delivery setting passed to the module. |
+| <a name="output_topic_arn"></a> [topic\_arn](#output\_topic\_arn) | ARN of the SNS topic used by the subscription. |
 <!-- END_TF_DOCS -->
