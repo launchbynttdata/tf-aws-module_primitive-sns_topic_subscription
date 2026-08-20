@@ -5,13 +5,14 @@
 
 ## Overview
 
-Terraform primitive module that wraps a single [`aws_sns_topic_subscription`](https://registry.terraform.io/providers/hashicorp/aws/5.100.0/docs/resources/sns_topic_subscription) resource. It exposes the arguments and attributes supported by the AWS provider so callers can configure subscriptions without losing functionality.
+Terraform primitive module that wraps a single [`aws_sns_topic_subscription`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_subscription) resource. It exposes the arguments and attributes supported by the AWS provider so callers can configure subscriptions without losing functionality.
 
 ## Usage
 
 ```hcl
 module "sns_topic_subscription" {
-  source = "path/to/module"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/sns_topic_subscription/aws"
+  version = "~> 1.0"
 
   topic_arn = aws_sns_topic.example.arn
   protocol  = "sqs"
@@ -21,20 +22,9 @@ module "sns_topic_subscription" {
 }
 ```
 
-## Requirements
-
-- Terraform `~> 1.9`
-- AWS provider `~> 5.100` (see [`versions.tf`](./versions.tf))
-
 ## Examples
 
 See [`examples/complete/`](./examples/complete/) for an end-to-end subscription from an SNS topic to an encrypted SQS queue.
-
-## Contributing
-
-Run `make configure` once to sync shared automation components, then use the standard targets from the included Makefile (for example `make lint`, `make check`).
-
-Pre-commit hooks enforce formatting and documentation. Install with `pre-commit install` after `make configure`.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
