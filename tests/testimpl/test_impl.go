@@ -23,11 +23,11 @@ import (
 func awsRegionForDeployedInfra(t *testing.T, ctx types.TestContext) string {
 	t.Helper()
 	opts := ctx.TerratestTerraformOptions()
-	out, err := terraform.OutputE(t, opts, "aws_region")
+	out, err := terraform.OutputContextE(t, context.Background(), opts, "aws_region")
 	if err == nil && strings.TrimSpace(out) != "" {
 		return strings.TrimSpace(out)
 	}
-	subArn := terraform.Output(t, opts, "subscription_arn")
+	subArn := terraform.OutputContext(t, context.Background(), opts, "subscription_arn")
 	parts := strings.Split(subArn, ":")
 	require.GreaterOrEqual(t, len(parts), 7, "subscription_arn must be a valid SNS subscription ARN to infer region: %s", subArn)
 	return parts[3]
@@ -72,12 +72,12 @@ func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 	sqsClient := sqs.NewFromConfig(cfg)
 	kmsClient := kms.NewFromConfig(cfg)
 
-	subArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "subscription_arn")
-	topicArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "topic_arn")
-	queueURL := terraform.Output(t, ctx.TerratestTerraformOptions(), "queue_url")
-	queueArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "queue_arn")
-	kmsKeyID := terraform.Output(t, ctx.TerratestTerraformOptions(), "kms_key_id")
-	expectedProtocol := terraform.Output(t, ctx.TerratestTerraformOptions(), "protocol")
+	subArn := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "subscription_arn")
+	topicArn := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "topic_arn")
+	queueURL := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "queue_url")
+	queueArn := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "queue_arn")
+	kmsKeyID := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "kms_key_id")
+	expectedProtocol := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "protocol")
 
 	subOut, err := snsClient.GetSubscriptionAttributes(context.Background(), &sns.GetSubscriptionAttributesInput{
 		SubscriptionArn: aws.String(subArn),
@@ -139,11 +139,11 @@ func TestComposableCompleteReadonly(t *testing.T, ctx types.TestContext) {
 	sqsClient := sqs.NewFromConfig(cfg)
 	kmsClient := kms.NewFromConfig(cfg)
 
-	subArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "subscription_arn")
-	queueURL := terraform.Output(t, ctx.TerratestTerraformOptions(), "queue_url")
-	queueArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "queue_arn")
-	kmsKeyID := terraform.Output(t, ctx.TerratestTerraformOptions(), "kms_key_id")
-	expectedProtocol := terraform.Output(t, ctx.TerratestTerraformOptions(), "protocol")
+	subArn := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "subscription_arn")
+	queueURL := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "queue_url")
+	queueArn := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "queue_arn")
+	kmsKeyID := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "kms_key_id")
+	expectedProtocol := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "protocol")
 
 	subOut, err := snsClient.GetSubscriptionAttributes(context.Background(), &sns.GetSubscriptionAttributesInput{
 		SubscriptionArn: aws.String(subArn),
